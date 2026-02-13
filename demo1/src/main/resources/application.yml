@@ -1,0 +1,14 @@
+spring:
+  application:
+    name: demo1
+
+open-ai:
+  api-key: "your_key"
+
+server:
+  port: 8080
+
+logging:
+  level:
+    org.springframework.core.env: DEBUG
+

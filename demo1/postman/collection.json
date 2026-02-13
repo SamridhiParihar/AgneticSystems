@@ -1,0 +1,87 @@
+{
+  "info": {
+    "_postman_id": "3fc523c1-2822-4a61-b838-042c736aaf5a",
+    "name": "Demo1 API",
+    "description": "Postman collection for Demo1 Application",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "42912006"
+  },
+  "item": [
+    {
+      "name": "Start Agent",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"input\": \"Your task or goal here\"}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/agent/start",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "agent",
+            "start"
+          ]
+        },
+        "description": "Start a new agent with a task/goal"
+      },
+      "response": []
+    },
+    {
+      "name": "Execute Next Step",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/api/agent/{{agentId}}/next",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "agent",
+            "{{agentId}}",
+            "next"
+          ],
+          "variable": [
+            {
+              "key": "agentId",
+              "value": "agent-id-here",
+              "description": "ID of the agent"
+            }
+          ]
+        },
+        "description": "Execute the next step for the specified agent"
+      },
+      "response": []
+    },
+    {
+      "name": "New Request",
+      "request": {
+        "method": "GET",
+        "header": []
+      },
+      "response": []
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:8080",
+      "type": "string"
+    },
+    {
+      "key": "agentId",
+      "value": ""
+    }
+  ]
+}
