@@ -1,0 +1,753 @@
+{
+  "info": {
+    "name": "Code Review Agent API",
+    "description": "Comprehensive test collection for the AI-powered code review and fixing agent. Tests include syntax errors, logic bugs, runtime errors, edge cases for both Python and JavaScript.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "version": "1.0.0"
+  },
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:8080",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "Health Check",
+      "item": [
+        {
+          "name": "Check API Health",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/health",
+              "host": ["{{base_url}}"],
+              "path": ["api", "health"]
+            },
+            "description": "Verify that the API is running and responsive"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Python - Syntax Errors",
+      "item": [
+        {
+          "name": "Python - Undefined Variable",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"code\": \"def greet(name):\\n  print('Hello ' + nam)\\n\\ngreet('World')\",\n  \"language\": \"python\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/review",
+              "host": ["{{base_url}}"],
+              "path": ["api", "review"]
+            },
+            "description": "Test fixing a simple typo: 'nam' instead of 'name'"
+          },
+          "response": []
+        },
+        {
+          "name": "Python - Missing Colon",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"code\": \"def calculate(x)\\n  result = x * 2\\n  return result\\n\\nprint(calculate(5))\",\n  \"language\": \"python\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/review",
+              "host": ["{{base_url}}"],
+              "path": ["api", "review"]
+            },
+            "description": "Test fixing missing colon after function definition"
+          },
+          "response": []
+        },
+        {
+          "name": "Python - Indentation Error",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"code\": \"def sum_numbers(a, b):\\nreturn a + b\\n\\nprint(sum_numbers(3, 4))\",\n  \"language\": \"python\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/review",
+              "host": ["{{base_url}}"],
+              "path": ["api", "review"]
+            },
+            "description": "Test fixing indentation error in function body"
+          },
+          "response": []
+        },
+        {
+          "name": "Python - Invalid Syntax (Multiple Errors)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"code\": \"def process(data)\\nif data > 10\\nprint(data)\\nelse\\nprint('small')\\n\\nprocess(15)\",\n  \"language\": \"python\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/review",
+              "host": ["{{base_url}}"],
+              "path": ["api", "review"]
+            },
+            "description": "Test fixing multiple syntax errors: missing colons, indentation"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Python - Logic Errors",
+      "item": [
+        {
+          "name": "Python - Wrong Operator",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"code\": \"def add(a, b):\\n  return a - b\\n\\nresult = add(5, 3)\\nprint(f'5 + 3 = {result}')\",\n  \"language\": \"python\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/review",
+              "host": ["{{base_url}}"],
+              "path": ["api", "review"]
+            },
+            "description": "Test fixing logic error: subtraction instead of addition"
+          },
+          "response": []
+        },
+        {
+          "name": "Python - Off-by-One Error",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"code\": \"def count_to_n(n):\\n  for i in range(n):\\n    print(i)\\n\\ncount_to_n(5)\",\n  \"language\": \"python\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/review",
+              "host": ["{{base_url}}"],
+              "path": ["api", "review"]
+            },
+            "description": "Test identifying off-by-one: should count 1-5, not 0-4"
+          },
+          "response": []
+        },
+        {
+          "name": "Python - Factorial Logic Bug",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"code\": \"def factorial(n):\\n  if n == 0:\\n    return 0\\n  return n * factorial(n - 1)\\n\\nprint(factorial(5))\",\n  \"language\": \"python\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/review",
+              "host": ["{{base_url}}"],
+              "path": ["api", "review"]
+            },
+            "description": "Test fixing factorial: should return 1 for base case, not 0"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Python - Runtime Errors",
+      "item": [
+        {
+          "name": "Python - Division by Zero",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"code\": \"def divide(a, b):\\n  return a / b\\n\\nprint(divide(10, 0))\",\n  \"language\": \"python\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/review",
+              "host": ["{{base_url}}"],
+              "path": ["api", "review"]
+            },
+            "description": "Test fixing division by zero error with proper error handling"
+          },
+          "response": []
+        },
+        {
+          "name": "Python - Index Out of Range",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"code\": \"numbers = [1, 2, 3, 4, 5]\\nprint(numbers[10])\",\n  \"language\": \"python\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/review",
+              "host": ["{{base_url}}"],
+              "path": ["api", "review"]
+            },
+            "description": "Test fixing list index out of range error"
+          },
+          "response": []
+        },
+        {
+          "name": "Python - Type Error (String + Int)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"code\": \"age = 25\\nmessage = 'I am ' + age + ' years old'\\nprint(message)\",\n  \"language\": \"python\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/review",
+              "host": ["{{base_url}}"],
+              "path": ["api", "review"]
+            },
+            "description": "Test fixing type error: concatenating string with integer"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Python - Valid Code (Should Pass)",
+      "item": [
+        {
+          "name": "Python - Simple Hello World",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"code\": \"print('Hello, World!')\",\n  \"language\": \"python\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/review",
+              "host": ["{{base_url}}"],
+              "path": ["api", "review"]
+            },
+            "description": "Test with perfectly valid code - should succeed on first attempt"
+          },
+          "response": []
+        },
+        {
+          "name": "Python - Correct Function",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"code\": \"def fibonacci(n):\\n  if n <= 1:\\n    return n\\n  return fibonacci(n-1) + fibonacci(n-2)\\n\\nprint(fibonacci(7))\",\n  \"language\": \"python\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/review",
+              "host": ["{{base_url}}"],
+              "path": ["api", "review"]
+            },
+            "description": "Test with correct recursive function"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "JavaScript - Syntax Errors",
+      "item": [
+        {
+          "name": "JavaScript - Undefined Variable",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"code\": \"function greet(name) {\\n  console.log('Hello ' + nam);\\n}\\n\\ngreet('World');\",\n  \"language\": \"javascript\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/review",
+              "host": ["{{base_url}}"],
+              "path": ["api", "review"]
+            },
+            "description": "Test fixing typo in JavaScript: 'nam' instead of 'name'"
+          },
+          "response": []
+        },
+        {
+          "name": "JavaScript - Missing Semicolon and Brace",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"code\": \"function add(a, b) {\\n  return a + b\\n\\nconst result = add(5, 3);\\nconsole.log(result);\",\n  \"language\": \"javascript\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/review",
+              "host": ["{{base_url}}"],
+              "path": ["api", "review"]
+            },
+            "description": "Test fixing missing closing brace and semicolon"
+          },
+          "response": []
+        },
+        {
+          "name": "JavaScript - Invalid Arrow Function",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"code\": \"const multiply = (x, y) ->\\n  return x * y;\\n};\\n\\nconsole.log(multiply(4, 5));\",\n  \"language\": \"javascript\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/review",
+              "host": ["{{base_url}}"],
+              "path": ["api", "review"]
+            },
+            "description": "Test fixing arrow function syntax"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "JavaScript - Logic Errors",
+      "item": [
+        {
+          "name": "JavaScript - Wrong Operator in Sum",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"code\": \"function sum(a, b) {\\n  return a - b;\\n}\\n\\nconsole.log('Sum of 5 and 3:', sum(5, 3));\",\n  \"language\": \"javascript\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/review",
+              "host": ["{{base_url}}"],
+              "path": ["api", "review"]
+            },
+            "description": "Test fixing logic error: subtraction instead of addition"
+          },
+          "response": []
+        },
+        {
+          "name": "JavaScript - Array Reduce Wrong Initial Value",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"code\": \"const numbers = [1, 2, 3, 4, 5];\\nconst sum = numbers.reduce((acc, num) => acc + num, 1);\\nconsole.log('Sum:', sum);\",\n  \"language\": \"javascript\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/review",
+              "host": ["{{base_url}}"],
+              "path": ["api", "review"]
+            },
+            "description": "Test fixing wrong initial value in reduce (should be 0, not 1)"
+          },
+          "response": []
+        },
+        {
+          "name": "JavaScript - Comparison Bug (= vs ==)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"code\": \"function isEven(num) {\\n  if (num % 2 = 0) {\\n    return true;\\n  }\\n  return false;\\n}\\n\\nconsole.log(isEven(4));\",\n  \"language\": \"javascript\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/review",
+              "host": ["{{base_url}}"],
+              "path": ["api", "review"]
+            },
+            "description": "Test fixing assignment instead of comparison"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "JavaScript - Runtime Errors",
+      "item": [
+        {
+          "name": "JavaScript - Null Reference",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"code\": \"const user = null;\\nconsole.log(user.name);\",\n  \"language\": \"javascript\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/review",
+              "host": ["{{base_url}}"],
+              "path": ["api", "review"]
+            },
+            "description": "Test fixing null reference error"
+          },
+          "response": []
+        },
+        {
+          "name": "JavaScript - Undefined Function Call",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"code\": \"const result = calculateSum(5, 10);\\nconsole.log(result);\",\n  \"language\": \"javascript\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/review",
+              "host": ["{{base_url}}"],
+              "path": ["api", "review"]
+            },
+            "description": "Test fixing undefined function error"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "JavaScript - Valid Code (Should Pass)",
+      "item": [
+        {
+          "name": "JavaScript - Simple Hello World",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"code\": \"console.log('Hello, World!');\",\n  \"language\": \"javascript\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/review",
+              "host": ["{{base_url}}"],
+              "path": ["api", "review"]
+            },
+            "description": "Test with perfectly valid JavaScript code"
+          },
+          "response": []
+        },
+        {
+          "name": "JavaScript - Correct ES6 Function",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"code\": \"const square = (x) => x * x;\\nconst numbers = [1, 2, 3, 4, 5];\\nconst squares = numbers.map(square);\\nconsole.log('Squares:', squares);\",\n  \"language\": \"javascript\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/review",
+              "host": ["{{base_url}}"],
+              "path": ["api", "review"]
+            },
+            "description": "Test with correct ES6 arrow functions and array methods"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Edge Cases & Validation",
+      "item": [
+        {
+          "name": "Missing Code Field",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"language\": \"python\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/review",
+              "host": ["{{base_url}}"],
+              "path": ["api", "review"]
+            },
+            "description": "Test validation: missing code field should return 400"
+          },
+          "response": []
+        },
+        {
+          "name": "Missing Language Field",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"code\": \"print('test')\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/review",
+              "host": ["{{base_url}}"],
+              "path": ["api", "review"]
+            },
+            "description": "Test validation: missing language field should return 400"
+          },
+          "response": []
+        },
+        {
+          "name": "Unsupported Language",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"code\": \"fn main() { println!(\\\"Hello\\\"); }\",\n  \"language\": \"rust\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/review",
+              "host": ["{{base_url}}"],
+              "path": ["api", "review"]
+            },
+            "description": "Test validation: unsupported language should return 400"
+          },
+          "response": []
+        },
+        {
+          "name": "Empty Code String",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"code\": \"\",\n  \"language\": \"python\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/review",
+              "host": ["{{base_url}}"],
+              "path": ["api", "review"]
+            },
+            "description": "Test validation: empty code should return 400"
+          },
+          "response": []
+        },
+        {
+          "name": "Very Long Code (Near Limit)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"code\": \"# This is a long comment to test the length limit\\n# Line 2\\n# Line 3\\n# ... (imagine this is close to 10KB)\\ndef process():\\n  for i in range(100):\\n    print(i)\\n\\nprocess()\",\n  \"language\": \"python\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/review",
+              "host": ["{{base_url}}"],
+              "path": ["api", "review"]
+            },
+            "description": "Test with code near the 10KB limit (should succeed)"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Complex Multi-Error Cases",
+      "item": [
+        {
+          "name": "Python - Multiple Errors (Challenging)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"code\": \"def calculate_average(numbers)\\nif len(numbers) = 0:\\nreturn 0\\ntotal = 0\\nfor num in numbers\\ntotal = total + num\\naverage = total / len(numbers)\\nreturn average\\n\\ndata = [10, 20, 30, 40]\\nresult = calculate_average(data)\\nprint('Average: ' + result)\",\n  \"language\": \"python\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/review",
+              "host": ["{{base_url}}"],
+              "path": ["api", "review"]
+            },
+            "description": "Test with multiple errors: missing colons, wrong comparison, indentation, type error"
+          },
+          "response": []
+        },
+        {
+          "name": "JavaScript - Multiple Errors (Challenging)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"code\": \"function processData(arr) {\\n  let result = [];\\n  for (let i = 0; i <= arr.length; i++) {\\n    if (arr[i] % 2 = 0) {\\n      result.push(arr[i] * 2);\\n    }\\n  }\\n  return result;\\n\\nconst numbers = [1, 2, 3, 4, 5];\\nconst processed = processData(numbers);\\nconsole.log(processed);\",\n  \"language\": \"javascript\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/review",
+              "host": ["{{base_url}}"],
+              "path": ["api", "review"]
+            },
+            "description": "Test with multiple errors: off-by-one, assignment vs comparison, missing brace"
+          },
+          "response": []
+        }
+      ]
+    }
+  ]
+}
